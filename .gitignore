@@ -25,3 +25,6 @@ dist-ssr
 
 # Data folder
 data/
+
+# Server build output
+server/dist/

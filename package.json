@@ -5,24 +5,26 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "pnpm build-server && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "run-server": "node --experimental-strip-types --watch server/main.ts"
+    "build-server": "tsup",
+    "dev-server": "tsup --watch --onSuccess \"node server/dist/main.js\"",
+    "run-server": "node server/dist/main.js"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
     "@fastify/multipart": "^8.0.0",
     "@fastify/static": "^7.0.0",
     "fastify": "^4.24.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/node": "^20.10.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@types/node": "^20.10.0",
     "@vitejs/plugin-react-swc": "^3.9.0",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -30,6 +32,7 @@
     "globals": "^16.0.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "tsup": "^8.5.0"
   }
 }

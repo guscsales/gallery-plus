@@ -2,6 +2,7 @@ export interface Photo {
   id: string;
   title: string;
   imageId?: string;
+  albumIds: string[];
 }
 
 export interface Album {
@@ -10,8 +11,8 @@ export interface Album {
 }
 
 export interface PhotoOnAlbum {
-  photo_id: string;
-  album_id: string;
+  photoId: string;
+  albumId: string;
 }
 
 export interface Database {

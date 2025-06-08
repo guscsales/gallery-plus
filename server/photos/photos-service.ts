@@ -1,179 +1,222 @@
-import { writeFile, unlink } from 'fs/promises';
-import { existsSync } from 'fs';
-import { join, extname } from 'path';
-import { randomUUID } from 'crypto';
-import { DatabaseService } from '../services/database-service';
-import { Photo } from '../models';
-import { CreatePhotoRequest, UpdatePhotoRequest } from './photos-interfaces';
+import {randomUUID} from "crypto";
+import {DatabaseService} from "../services/database-service";
+import {ImageService} from "../services/image-service";
+import {Photo} from "../models";
+import {CreatePhotoRequest, UpdatePhotoRequest, ManagePhotoAlbumsRequest} from "./photos-interfaces";
 
 export class PhotosService {
-  private dbService: DatabaseService;
+	private dbService: DatabaseService;
+	private imageService: ImageService;
 
-  constructor(dbService: DatabaseService) {
-    this.dbService = dbService;
-  }
+	constructor(dbService: DatabaseService, imageService: ImageService) {
+		this.dbService = dbService;
+		this.imageService = imageService;
+	}
 
-  async getAllPhotos(albumId?: string): Promise<Photo[]> {
-    const db = await this.dbService.readDatabase();
-    
-    if (albumId) {
-      const photoIds = db.photosOnAlbums
-        .filter(relation => relation.album_id === albumId)
-        .map(relation => relation.photo_id);
-      
-      return db.photos.filter(photo => photoIds.includes(photo.id));
-    }
-    
-    return db.photos;
-  }
+	private populatePhotoAlbums(photo: Photo, photosOnAlbums: Array<{photoId: string, albumId: string}>): Photo {
+		const albumIds = photosOnAlbums
+			.filter(relation => relation.photoId === photo.id)
+			.map(relation => relation.albumId);
+		
+		return {
+			...photo,
+			albumIds
+		};
+	}
 
-  async getPhotoById(id: string): Promise<Photo | null> {
-    const db = await this.dbService.readDatabase();
-    return db.photos.find(photo => photo.id === id) || null;
-  }
+	async getAllPhotos(albumId?: string): Promise<Photo[]> {
+		const db = await this.dbService.readDatabase();
 
-  async createPhoto(photoData: CreatePhotoRequest): Promise<Photo> {
-    const photoId = randomUUID();
+		let photos: Photo[];
+		if (albumId) {
+			const photoIds = db.photosOnAlbums
+				.filter((relation) => relation.albumId === albumId)
+				.map((relation) => relation.photoId);
 
-    const photo: Photo = {
-      id: photoId,
-      title: photoData.title
-      // imageId will be added when image is uploaded
-    };
+			photos = db.photos.filter((photo) => photoIds.includes(photo.id));
+		} else {
+			photos = db.photos;
+		}
 
-    const db = await this.dbService.readDatabase();
-    db.photos.push(photo);
-    await this.dbService.writeDatabase(db);
+		// Populate albumIds for each photo
+		return photos.map(photo => this.populatePhotoAlbums(photo, db.photosOnAlbums));
+	}
 
-    return photo;
-  }
+	async getPhotoById(id: string): Promise<Photo | null> {
+		const db = await this.dbService.readDatabase();
+		const photo = db.photos.find((photo) => photo.id === id);
+		
+		if (!photo) {
+			return null;
+		}
 
-  async uploadImage(
-    photoId: string,
-    imageBuffer: Buffer,
-    filename: string
-  ): Promise<Photo | null> {
-    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-    const ext = extname(filename).toLowerCase();
-    
-    if (!allowedExtensions.includes(ext)) {
-      throw new Error('Invalid image format. Only JPG, JPEG, and PNG are allowed.');
-    }
+		return this.populatePhotoAlbums(photo, db.photosOnAlbums);
+	}
 
-    const maxSize = 50 * 1024 * 1024; // 50MB
-    if (imageBuffer.length > maxSize) {
-      throw new Error('Image size exceeds 50MB limit.');
-    }
+	async createPhoto(photoData: CreatePhotoRequest): Promise<Photo> {
+		const photoId = randomUUID();
 
-    const db = await this.dbService.readDatabase();
-    const photoIndex = db.photos.findIndex(photo => photo.id === photoId);
-    
-    if (photoIndex === -1) {
-      return null;
-    }
+		const photo: Photo = {
+			id: photoId,
+			title: photoData.title,
+			albumIds: [], // New photos start with no albums
+			// imageId will be added when image is uploaded
+		};
 
-    // Remove old image if exists
-    const photo = db.photos[photoIndex];
-    if (photo.imageId) {
-      await this.removeImageFile(photo.imageId);
-    }
+		const db = await this.dbService.readDatabase();
+		db.photos.push(photo);
+		await this.dbService.writeDatabase(db);
 
-    // Save new image
-    const imageId = randomUUID();
-    const imageFilename = `${imageId}${ext}`;
-    const imagePath = join(this.dbService.getImagesDir(), imageFilename);
+		return photo;
+	}
 
-    await writeFile(imagePath, imageBuffer);
+	async uploadImage(
+		photoId: string,
+		imageBuffer: Buffer,
+		filename: string
+	): Promise<Photo | null> {
+		const db = await this.dbService.readDatabase();
+		const photoIndex = db.photos.findIndex((photo) => photo.id === photoId);
 
-    // Update photo with new imageId
-    db.photos[photoIndex].imageId = imageId;
-    await this.dbService.writeDatabase(db);
+		if (photoIndex === -1) {
+			return null;
+		}
 
-    return db.photos[photoIndex];
-  }
+		// If photo already has an image, delete it first
+		if (db.photos[photoIndex].imageId) {
+			await this.imageService.deleteImage(db.photos[photoIndex].imageId);
+		}
 
-  private async removeImageFile(imageId: string): Promise<void> {
-    const imagePath = join(this.dbService.getImagesDir(), imageId);
-    const extensions = ['.jpg', '.jpeg', '.png'];
-    
-    for (const ext of extensions) {
-      const fullPath = `${imagePath}${ext}`;
-      if (existsSync(fullPath)) {
-        try {
-          await unlink(fullPath);
-        } catch (error) {
-          console.error('Error deleting image file:', error);
-        }
-        break;
-      }
-    }
-  }
+		const imageId = await this.imageService.uploadImage(imageBuffer, filename);
 
-  async updatePhoto(id: string, updateData: UpdatePhotoRequest): Promise<Photo | null> {
-    const db = await this.dbService.readDatabase();
-    const photoIndex = db.photos.findIndex(photo => photo.id === id);
-    
-    if (photoIndex === -1) {
-      return null;
-    }
+		// Update photo with new imageId
+		db.photos[photoIndex].imageId = imageId;
+		await this.dbService.writeDatabase(db);
 
-    db.photos[photoIndex].title = updateData.title;
-    await this.dbService.writeDatabase(db);
+		return this.populatePhotoAlbums(db.photos[photoIndex], db.photosOnAlbums);
+	}
 
-    return db.photos[photoIndex];
-  }
+	async updatePhoto(
+		id: string,
+		updateData: UpdatePhotoRequest
+	): Promise<Photo | null> {
+		const db = await this.dbService.readDatabase();
+		const photoIndex = db.photos.findIndex((photo) => photo.id === id);
 
-  async deletePhoto(id: string): Promise<boolean> {
-    const db = await this.dbService.readDatabase();
-    const photoIndex = db.photos.findIndex(photo => photo.id === id);
-    
-    if (photoIndex === -1) {
-      return false;
-    }
+		if (photoIndex === -1) {
+			return null;
+		}
 
-    const photo = db.photos[photoIndex];
-    
-    // Delete image file if exists
-    if (photo.imageId) {
-      await this.removeImageFile(photo.imageId);
-    }
+		db.photos[photoIndex].title = updateData.title;
+		await this.dbService.writeDatabase(db);
 
-    // Remove photo from database
-    db.photos.splice(photoIndex, 1);
-    
-    // Remove from albums relationships
-    db.photosOnAlbums = db.photosOnAlbums.filter(
-      relation => relation.photo_id !== id
-    );
-    
-    await this.dbService.writeDatabase(db);
-    return true;
-  }
+		return this.populatePhotoAlbums(db.photos[photoIndex], db.photosOnAlbums);
+	}
 
-  async addPhotoToAlbum(photoId: string, albumId: string): Promise<boolean> {
-    const db = await this.dbService.readDatabase();
-    
-    const photoExists = db.photos.some(photo => photo.id === photoId);
-    const albumExists = db.albums.some(album => album.id === albumId);
-    
-    if (!photoExists || !albumExists) {
-      return false;
-    }
+	async deletePhoto(id: string): Promise<boolean> {
+		const db = await this.dbService.readDatabase();
+		const photoIndex = db.photos.findIndex((photo) => photo.id === id);
 
-    const relationExists = db.photosOnAlbums.some(
-      relation => relation.photo_id === photoId && relation.album_id === albumId
-    );
-    
-    if (relationExists) {
-      return true;
-    }
+		if (photoIndex === -1) {
+			return false;
+		}
 
-    db.photosOnAlbums.push({
-      photo_id: photoId,
-      album_id: albumId
-    });
-    
-    await this.dbService.writeDatabase(db);
-    return true;
-  }
-} 
+		const photo = db.photos[photoIndex];
+
+		// Delete image file if exists using ImageService
+		if (photo.imageId) {
+			await this.imageService.deleteImage(photo.imageId);
+		}
+
+		// Remove photo from database
+		db.photos.splice(photoIndex, 1);
+
+		// Remove from albums relationships
+		db.photosOnAlbums = db.photosOnAlbums.filter(
+			(relation) => relation.photoId !== id
+		);
+
+		await this.dbService.writeDatabase(db);
+		return true;
+	}
+
+	async addPhotoToAlbum(photoId: string, albumId: string): Promise<boolean> {
+		const db = await this.dbService.readDatabase();
+
+		const photoExists = db.photos.some((photo) => photo.id === photoId);
+		const albumExists = db.albums.some((album) => album.id === albumId);
+
+		if (!photoExists || !albumExists) {
+			return false;
+		}
+
+		const relationExists = db.photosOnAlbums.some(
+			(relation) =>
+				relation.photoId === photoId && relation.albumId === albumId
+		);
+
+		if (relationExists) {
+			return true;
+		}
+
+		db.photosOnAlbums.push({
+			photoId: photoId,
+			albumId: albumId,
+		});
+
+		await this.dbService.writeDatabase(db);
+		return true;
+	}
+
+	async managePhotoAlbums(photoId: string, albumsData: ManagePhotoAlbumsRequest): Promise<boolean> {
+		const db = await this.dbService.readDatabase();
+
+		// Check if photo exists
+		const photoExists = db.photos.some((photo) => photo.id === photoId);
+		if (!photoExists) {
+			return false;
+		}
+
+		// Check if all provided albums exist
+		const { albumIds } = albumsData;
+		for (const albumId of albumIds) {
+			const albumExists = db.albums.some((album) => album.id === albumId);
+			if (!albumExists) {
+				return false;
+			}
+		}
+
+		// Get current albums for this photo
+		const currentAlbumIds = db.photosOnAlbums
+			.filter((relation) => relation.photoId === photoId)
+			.map((relation) => relation.albumId);
+
+		// Use Sets to calculate differences
+		const currentSet = new Set(currentAlbumIds);
+		const desiredSet = new Set(albumIds);
+
+		// Albums to add: in desired but not in current
+		const albumsToAdd = [...desiredSet].filter(albumId => !currentSet.has(albumId));
+
+		// Albums to remove: in current but not in desired  
+		const albumsToRemove = [...currentSet].filter(albumId => !desiredSet.has(albumId));
+
+		// Remove photo from albums that should no longer contain it
+		db.photosOnAlbums = db.photosOnAlbums.filter(
+			(relation) => 
+				relation.photoId !== photoId || 
+				!albumsToRemove.includes(relation.albumId)
+		);
+
+		// Add photo to new albums
+		for (const albumId of albumsToAdd) {
+			db.photosOnAlbums.push({
+				photoId: photoId,
+				albumId: albumId,
+			});
+		}
+
+		await this.dbService.writeDatabase(db);
+		return true;
+	}
+}

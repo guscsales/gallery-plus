@@ -1,31 +1,25 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { Database } from '../models';
 
 export class DatabaseService {
   private dbPath: string;
   private dataDir: string;
-  private imagesDir: string;
 
   constructor() {
-    this.dataDir = '../data';
-    this.imagesDir = '../data/images';
+    this.dataDir = resolve(process.cwd(), 'data');
     this.dbPath = join(this.dataDir, 'db.json');
   }
 
   async initialize(): Promise<void> {
-    await this.ensureDirectoriesExist();
+    await this.ensureDataDirExists();
     await this.ensureDbExists();
   }
 
-  private async ensureDirectoriesExist(): Promise<void> {
+  private async ensureDataDirExists(): Promise<void> {
     if (!existsSync(this.dataDir)) {
       await mkdir(this.dataDir, { recursive: true });
-    }
-
-    if (!existsSync(this.imagesDir)) {
-      await mkdir(this.imagesDir, { recursive: true });
     }
   }
 
@@ -63,9 +57,5 @@ export class DatabaseService {
       console.error('Error writing database:', error);
       throw new Error('Failed to write to database');
     }
-  }
-
-  getImagesDir(): string {
-    return this.imagesDir;
   }
 } 

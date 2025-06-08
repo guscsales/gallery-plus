@@ -1,8 +1,9 @@
 import Fastify from 'fastify';
 import multipart from '@fastify/multipart';
 import staticFiles from '@fastify/static';
-import { join } from 'path';
+import { resolve } from 'path';
 import { DatabaseService } from './services/database-service';
+import { ImageService } from './services/image-service';
 import { PhotosService } from './photos/photos-service';
 import { AlbumsService } from './albums/albums-service';
 import { photosRoutes } from './photos/photos-routes';
@@ -24,7 +25,7 @@ const start = async () => {
   
   // Serve static images
   await fastify.register(staticFiles, {
-    root: join(process.cwd(), '../data/images'),
+    root: resolve(process.cwd(), 'data', 'images'),
     prefix: '/images/'
   });
   
@@ -32,7 +33,8 @@ const start = async () => {
   const databaseService = new DatabaseService();
   await databaseService.initialize();
   
-  const photosService = new PhotosService(databaseService);
+  const imageService = new ImageService();
+  const photosService = new PhotosService(databaseService, imageService);
   const albumsService = new AlbumsService(databaseService);
   
   // Register routes
@@ -49,6 +51,7 @@ const start = async () => {
     console.log('🚀 Server running at http://localhost:5799');
     console.log('📁 Images served at http://localhost:5799/images/');
     console.log('🏥 Health check at http://localhost:5799/health');
+    console.log(`📂 Data directory: ${resolve(process.cwd(), 'data')}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

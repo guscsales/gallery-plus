@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
-import { DatabaseService } from '../services/database-service.ts';
-import { Album } from '../models.ts';
-import { CreateAlbumRequest } from './albums-interfaces.ts';
+import { DatabaseService } from '../services/database-service';
+import { Album } from '../models';
+import { CreateAlbumRequest } from './albums-interfaces';
 
 export class AlbumsService {
   private dbService: DatabaseService;

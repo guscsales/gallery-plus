@@ -2,12 +2,12 @@ import Fastify from 'fastify';
 import multipart from '@fastify/multipart';
 import staticFiles from '@fastify/static';
 import { resolve } from 'path';
-import { DatabaseService } from './services/database-service.ts';
-import { ImageService } from './services/image-service.ts';
-import { PhotosService } from './photos/photos-service.ts';
-import { AlbumsService } from './albums/albums-service.ts';
-import { photosRoutes } from './photos/photos-routes.ts';
-import { albumsRoutes } from './albums/albums-routes.ts';
+import { DatabaseService } from './services/database-service';
+import { ImageService } from './services/image-service';
+import { PhotosService } from './photos/photos-service';
+import { AlbumsService } from './albums/albums-service';
+import { photosRoutes } from './photos/photos-routes';
+import { albumsRoutes } from './albums/albums-routes';
 
 
 // Start server

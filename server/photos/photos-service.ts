@@ -1,8 +1,8 @@
 import {randomUUID} from "crypto";
-import {DatabaseService} from "../services/database-service";
-import {ImageService} from "../services/image-service";
-import {Photo} from "../models";
-import {CreatePhotoRequest, UpdatePhotoRequest, ManagePhotoAlbumsRequest} from "./photos-interfaces";
+import {DatabaseService} from "../services/database-service.ts";
+import {ImageService} from "../services/image-service.ts";
+import {Photo} from "../models.ts";
+import {CreatePhotoRequest, UpdatePhotoRequest, ManagePhotoAlbumsRequest} from "./photos-interfaces.ts";
 
 export class PhotosService {
 	private dbService: DatabaseService;

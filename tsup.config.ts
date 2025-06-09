@@ -17,5 +17,12 @@ export default defineConfig({
     '@fastify/multipart', 
     '@fastify/static',
     'zod'
-  ]
+  ],
+  esbuildOptions(options) {
+    // Preserve the folder structure
+    options.outbase = 'server'
+  },
+  onSuccess: async () => {
+    console.log('✅ Server build completed successfully!')
+  }
 }); 

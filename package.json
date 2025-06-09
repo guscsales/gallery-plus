@@ -8,7 +8,7 @@
     "build": "pnpm build-server && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build-server": "tsup",
+    "build-server": "tsc --noEmit -p tsconfig.server.json && tsup",
     "dev-server": "tsup --watch --onSuccess \"node server/dist/main.js\"",
     "run-server": "node server/dist/main.js"
   },

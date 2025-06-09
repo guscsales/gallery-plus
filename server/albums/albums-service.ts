@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
-import { DatabaseService } from '../services/database-service';
-import { Album } from '../models';
-import { CreateAlbumRequest } from './albums-interfaces';
+import { DatabaseService } from '../services/database-service.ts';
+import { Album } from '../models.ts';
+import { CreateAlbumRequest } from './albums-interfaces.ts';
 
 export class AlbumsService {
   private dbService: DatabaseService;
@@ -48,7 +48,7 @@ export class AlbumsService {
     
     // Remove all photo relationships for this album
     db.photosOnAlbums = db.photosOnAlbums.filter(
-      relation => relation.album_id !== id
+      relation => relation.albumId !== id
     );
     
     await this.dbService.writeDatabase(db);

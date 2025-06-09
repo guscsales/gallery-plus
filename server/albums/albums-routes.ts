@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { ZodError } from 'zod';
-import { AlbumsService } from './albums-service';
-import { createAlbumSchema, albumParamsSchema } from './albums-interfaces';
+import { AlbumsService } from './albums-service.ts';
+import { createAlbumSchema, albumParamsSchema } from './albums-interfaces.ts';
 
 export async function albumsRoutes(fastify: FastifyInstance, albumsService: AlbumsService) {
   // GET /albums

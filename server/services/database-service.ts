@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
-import { Database } from '../models';
+import { Database } from '../models.ts';
 
 export class DatabaseService {
   private dbPath: string;

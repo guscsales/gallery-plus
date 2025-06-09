@@ -1,13 +1,13 @@
-import {FastifyInstance} from "fastify";
-import {ZodError} from "zod";
-import {PhotosService} from "./photos-service";
+import { FastifyInstance } from 'fastify';
+import { PhotosService } from "./photos-service.ts";
+import { ZodError } from 'zod';
 import {
 	createPhotoSchema,
 	updatePhotoSchema,
 	photoParamsSchema,
 	photoQuerySchema,
 	managePhotoAlbumsSchema,
-} from "./photos-interfaces";
+} from "./photos-interfaces.ts";
 import { MultipartFile } from "@fastify/multipart";
 
 export async function photosRoutes(

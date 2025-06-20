@@ -17,6 +17,7 @@ export const cardVariants = tv({
 	},
 	defaultVariants: {
 		size: "none",
+		variant: "default",
 	},
 });
 

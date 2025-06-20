@@ -3,6 +3,7 @@ import Icon from "./icon";
 import Text from "./text";
 import {tv, type VariantProps} from "tailwind-variants";
 import SpinnerIcon from "../assets/icons/spinner.svg?react";
+import cx from "classnames";
 
 export const buttonVariants = tv({
 	base: "flex items-center justify-center cursor-pointer transition rounded group gap-1",
@@ -12,7 +13,7 @@ export const buttonVariants = tv({
 			secondary: "bg-background-secondary hover:bg-background-tertiary",
 		},
 		size: {
-			md: "h-10 py-2 px-3",
+			md: "h-10 py-2 pl-3 pr-3",
 		},
 		disabled: {
 			true: "opacity-50 pointer-events-none",
@@ -48,7 +49,10 @@ export const buttonIconVariants = tv({
 			secondary: "fill-label",
 		},
 		size: {
-			md: "w-4 h-4",
+			md: "w-6 h-6",
+		},
+		handling: {
+			true: "w-4 h-4",
 		},
 	},
 	defaultVariants: {
@@ -81,21 +85,26 @@ export default function Button({
 				size,
 				disabled,
 				handling,
-				className,
+				className: cx(
+					{
+						"pr-1": icon,
+					},
+					className
+				),
 			})}
 			disabled={disabled as boolean}
 			{...props}
 		>
+			<Text variant="label-medium" className={buttonTextVariants({variant})}>
+				{children}
+			</Text>
 			{(icon || handling) && (
 				<Icon
 					svg={handling ? SpinnerIcon : icon!}
 					animate={handling}
-					className={buttonIconVariants({variant, size})}
+					className={buttonIconVariants({variant, size, handling})}
 				/>
 			)}
-			<Text variant="label-medium" className={buttonTextVariants({variant})}>
-				{children}
-			</Text>
 		</button>
 	);
 }

@@ -15,9 +15,12 @@
   "dependencies": {
     "@fastify/multipart": "^8.0.0",
     "@fastify/static": "^7.0.0",
+    "@tailwindcss/vite": "^4.1.10",
     "fastify": "^4.24.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "tailwind-variants": "^1.0.0",
+    "tailwindcss": "^4.1.10",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -30,9 +33,10 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "tsup": "^8.5.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5",
-    "tsup": "^8.5.0"
+    "vite-plugin-svgr": "^4.3.0"
   }
 }

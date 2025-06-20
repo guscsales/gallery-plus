@@ -9,6 +9,7 @@ export const buttonIconVariants = tv({
 		variant: {
 			primary: "bg-accent-brand hover:bg-accent-brand-light",
 			secondary: "bg-background-secondary hover:bg-background-tertiary",
+			ghost: "bg-transparent hover:bg-border-primary/20",
 		},
 		size: {
 			md: "w-10 h-10 p-2 rounded",
@@ -33,6 +34,7 @@ export const buttonIconIconVariants = tv({
 		variant: {
 			primary: "fill-white",
 			secondary: "fill-white",
+			ghost: "fill-white",
 		},
 		size: {
 			md: "w-6 h-6",

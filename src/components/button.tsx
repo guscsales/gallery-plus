@@ -76,10 +76,12 @@ export default function Button({
 	children,
 	handling,
 	icon,
+	type = "button",
 	...props
 }: ButtonProps) {
 	return (
 		<button
+			type={type}
 			className={buttonVariants({
 				variant,
 				size,

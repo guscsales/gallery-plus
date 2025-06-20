@@ -3,9 +3,13 @@ import React from "react";
 
 export const cardVariants = tv({
 	base: `
-		rounded border border-solid border-border-primary transition
+		rounded transition
 	`,
 	variants: {
+		variant: {
+			default: "border border-solid border-border-primary bg-transparent",
+			primary: "bg-background-primary",
+		},
 		size: {
 			none: "",
 			md: "p-3",
@@ -25,6 +29,7 @@ interface CardProps
 export default function Card({
 	as = "div",
 	size,
+	variant,
 	children,
 	className,
 	...props
@@ -32,7 +37,7 @@ export default function Card({
 	return React.createElement(
 		as,
 		{
-			className: cardVariants({size, className}),
+			className: cardVariants({size, variant, className}),
 			...props,
 		},
 		children

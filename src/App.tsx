@@ -6,10 +6,21 @@ import Badge from "./components/badge";
 import InputText from "./components/input-text";
 import SearchIcon from "./assets/icons/search.svg?react";
 import InputCheckbox from "./components/input-checkbox";
-import Alert from "./components/alerts";
+import Alert from "./components/alert";
 import InputSingleFile from "./components/input-single-file";
 import {useForm} from "react-hook-form";
 import Divider from "./components/divider";
+import Text from "./components/text";
+// import * as Dialog from "@radix-ui/react-dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogTrigger,
+	DialogHeader,
+	DialogBody,
+	DialogFooter,
+	DialogClose,
+} from "./components/dialog";
 
 interface UploadFileForm {
 	file: FileList;
@@ -85,6 +96,47 @@ export default function App() {
 
 			<div>
 				<Divider />
+			</div>
+
+			<div>
+				{/* <Dialog.Root>
+					<Dialog.Trigger>
+						<Button>Abrir Dialog</Button>
+					</Dialog.Trigger>
+					<Dialog.Portal>
+						<Dialog.Overlay />
+						<Dialog.Content>
+							<Dialog.Title>
+								<Text>Título</Text>
+							</Dialog.Title>
+							<Dialog.Description>
+								<Text>Descrição</Text>
+							</Dialog.Description>
+							<Dialog.Close>
+								<Button>Fechar</Button>
+							</Dialog.Close>
+						</Dialog.Content>
+					</Dialog.Portal>
+				</Dialog.Root> */}
+
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button>Abrir Dialog</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<DialogHeader>Adicionar foto</DialogHeader>
+						<DialogBody className="flex flex-col gap-3">
+							<Text>Título</Text>
+							<Text>Descrição</Text>
+						</DialogBody>
+						<DialogFooter>
+							<DialogClose asChild>
+								<Button variant="secondary">Cancelar</Button>
+							</DialogClose>
+							<Button>Adicionar</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
 			</div>
 		</div>
 	);

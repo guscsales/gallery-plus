@@ -2,7 +2,7 @@ import React from "react";
 import {tv, type VariantProps} from "tailwind-variants";
 
 export const textVariants = tv({
-	base: "font-sans text-gray-400",
+	base: "font-sans text-white",
 	variants: {
 		variant: {
 			"heading-large": "text-2xl leading-[130%] font-bold",
@@ -20,7 +20,9 @@ export const textVariants = tv({
 	},
 });
 
-interface TextProps extends VariantProps<typeof textVariants> {
+interface TextProps
+	extends React.ComponentProps<"span">,
+		VariantProps<typeof textVariants> {
 	as?: keyof React.JSX.IntrinsicElements;
 	className?: string;
 	children?: React.ReactNode;

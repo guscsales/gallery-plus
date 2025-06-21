@@ -6,6 +6,10 @@ export const dividerVariants = tv({
 		variant: {
 			default: "bg-border-primary",
 		},
+		orientation: {
+			horizontal: "w-full h-px",
+			vertical: "w-px h-full",
+		},
 	},
 	defaultVariants: {
 		variant: "default",
@@ -14,8 +18,16 @@ export const dividerVariants = tv({
 
 interface DividerProps
 	extends React.ComponentProps<"div">,
-		VariantProps<typeof dividerVariants> {}
+		VariantProps<typeof dividerVariants> {
+	orientation?: "horizontal" | "vertical";
+}
 
-export default function Divider({className, ...props}: DividerProps) {
-	return <div className={dividerVariants({className})} {...props} />;
+export default function Divider({
+	className,
+	orientation = "horizontal",
+	...props
+}: DividerProps) {
+	return (
+		<div className={dividerVariants({className, orientation})} {...props} />
+	);
 }

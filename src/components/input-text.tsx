@@ -12,7 +12,7 @@ export const inputTextWrapperVariants = tv({
 	`,
 	variants: {
 		size: {
-			md: "h-12 p-3",
+			md: "h-10 p-3",
 		},
 		disabled: {
 			true: "pointer-events-none",
@@ -59,7 +59,7 @@ export default function InputText({
 	...props
 }: InputTextProps) {
 	return (
-		<div className={inputTextWrapperVariants({size, disabled})}>
+		<div className={inputTextWrapperVariants({size, disabled, className})}>
 			{(icon || handling) && (
 				<Icon
 					svg={handling ? SpinnerIcon : icon!}
@@ -68,7 +68,7 @@ export default function InputText({
 				/>
 			)}
 			<input
-				className={cx(inputTextVariants(), textVariants(), className)}
+				className={cx(inputTextVariants(), textVariants())}
 				disabled={disabled as boolean}
 				{...props}
 			/>

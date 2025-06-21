@@ -47,7 +47,7 @@ export class PhotosService {
 				.filter((relation) => relation.albumId === albumId)
 				.map((relation) => relation.photoId);
 
-			photos = db.photos.filter((photo) => photoIds.includes(photo.id));
+			photos = photos.filter((photo) => photoIds.includes(photo.id));
 		}
 
 		// Populate albumIds for each photo

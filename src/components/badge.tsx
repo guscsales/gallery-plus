@@ -13,6 +13,7 @@ export const badgeVariants = tv({
 				"bg-transparent border border-solid border-border-primary text-accent-paragraph",
 		},
 		size: {
+			xs: "py-0.5 px-2",
 			sm: "py-1 px-3",
 		},
 	},
@@ -22,9 +23,20 @@ export const badgeVariants = tv({
 	},
 });
 
+export const badgeTextVariants = tv({
+	base: "text-xs",
+	variants: {
+		size: {
+			xs: "text-xs",
+			sm: "text-sm",
+		},
+	},
+});
+
 export const badgeSkeletonVariants = tv({
 	variants: {
 		size: {
+			xs: "w-12 h-[1.375rem]",
 			sm: "w-16 h-[1.875rem]",
 		},
 	},
@@ -62,7 +74,7 @@ export default function Badge({
 
 	return (
 		<div className={badgeVariants({variant, size, className})} {...props}>
-			<Text variant="paragraph-medium">{children}</Text>
+			<Text className={badgeTextVariants({size})}>{children}</Text>
 		</div>
 	);
 }

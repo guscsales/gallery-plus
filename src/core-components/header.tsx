@@ -5,6 +5,7 @@ import SearchIcon from "../assets/icons/search.svg?react";
 import Divider from "../components/divider";
 import Button from "../components/button";
 import cx from "classnames";
+import {Link} from "react-router";
 
 interface HeaderProps extends React.ComponentProps<"div"> {}
 
@@ -15,7 +16,9 @@ export default function Header({className, ...props}: HeaderProps) {
 			className={cx("flex justify-between items-center gap-10", className)}
 			{...props}
 		>
-			<Logo className="h-5" />
+			<Link to="/">
+				<Logo className="h-5" />
+			</Link>
 			<InputText
 				icon={SearchIcon}
 				placeholder="Buscar fotos"

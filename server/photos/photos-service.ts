@@ -1,7 +1,7 @@
 import {randomUUID} from "crypto";
 import {DatabaseService} from "../services/database-service.ts";
 import {ImageService} from "../services/image-service.ts";
-import {Photo} from "../models.ts";
+import {Album, Photo} from "../models.ts";
 import {
 	CreatePhotoRequest,
 	UpdatePhotoRequest,
@@ -17,17 +17,23 @@ export class PhotosService {
 		this.imageService = imageService;
 	}
 
-	private populatePhotoAlbums(
+	private async populatePhotoAlbums(
 		photo: Photo,
 		photosOnAlbums: Array<{photoId: string; albumId: string}>
-	): Photo {
-		const albumIds = photosOnAlbums
+	): Promise<Photo & {albums: Album[]}> {
+		const db = await this.dbService.readDatabase();
+		const albumPromises = photosOnAlbums
 			.filter((relation) => relation.photoId === photo.id)
-			.map((relation) => relation.albumId);
+			.map((relation) =>
+				db.albums.find((album) => album.id === relation.albumId)
+			);
+
+		const albums = await Promise.all(albumPromises);
 
 		return {
 			...photo,
-			albumIds,
+			albums:
+				albums.filter((album): album is Album => album !== undefined) || [],
 		};
 	}
 
@@ -51,9 +57,11 @@ export class PhotosService {
 		}
 
 		// Populate albumIds for each photo
-		return photos.map((photo) =>
-			this.populatePhotoAlbums(photo, db.photosOnAlbums)
+		const populatedPhotos = await Promise.all(
+			photos.map((photo) => this.populatePhotoAlbums(photo, db.photosOnAlbums))
 		);
+
+		return populatedPhotos;
 	}
 
 	async getPhotoById(id: string): Promise<Photo | null> {
@@ -64,7 +72,7 @@ export class PhotosService {
 			return null;
 		}
 
-		return this.populatePhotoAlbums(photo, db.photosOnAlbums);
+		return await this.populatePhotoAlbums(photo, db.photosOnAlbums);
 	}
 
 	async createPhoto(photoData: CreatePhotoRequest): Promise<Photo> {
@@ -107,7 +115,10 @@ export class PhotosService {
 		db.photos[photoIndex].imageId = imageId;
 		await this.dbService.writeDatabase(db);
 
-		return this.populatePhotoAlbums(db.photos[photoIndex], db.photosOnAlbums);
+		return await this.populatePhotoAlbums(
+			db.photos[photoIndex],
+			db.photosOnAlbums
+		);
 	}
 
 	async updatePhoto(
@@ -124,7 +135,10 @@ export class PhotosService {
 		db.photos[photoIndex].title = updateData.title;
 		await this.dbService.writeDatabase(db);
 
-		return this.populatePhotoAlbums(db.photos[photoIndex], db.photosOnAlbums);
+		return await this.populatePhotoAlbums(
+			db.photos[photoIndex],
+			db.photosOnAlbums
+		);
 	}
 
 	async deletePhoto(id: string): Promise<boolean> {

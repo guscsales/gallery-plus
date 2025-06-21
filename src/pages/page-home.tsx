@@ -1,9 +1,23 @@
 import Container from "../components/container";
 import PhotosList from "../core-components/photos-list";
+import Text from "../components/text";
+import Badge from "../components/badge";
 
 export default function PageHome() {
 	return (
 		<Container>
+			<div className="flex items-center gap-3.5 mb-9">
+				<Text variant="heading-small">Álbuns</Text>
+				<div className="flex gap-3">
+					<Badge className="cursor-pointer">Todos</Badge>
+					<Badge className="cursor-pointer">Natureza</Badge>
+					<Badge className="cursor-pointer">Viagem</Badge>
+					<Badge className="cursor-pointer">Gastronomia</Badge>
+					<Badge className="cursor-pointer">Fotografia</Badge>
+					<Badge className="cursor-pointer">Pets</Badge>
+				</div>
+			</div>
+
 			<PhotosList
 				photos={[
 					{

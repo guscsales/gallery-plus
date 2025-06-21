@@ -1,6 +1,6 @@
-import { FastifyInstance } from 'fastify';
-import { PhotosService } from "./photos-service.ts";
-import { ZodError } from 'zod';
+import {FastifyInstance} from "fastify";
+import {PhotosService} from "./photos-service.ts";
+import {ZodError} from "zod";
 import {
 	createPhotoSchema,
 	updatePhotoSchema,
@@ -8,7 +8,7 @@ import {
 	photoQuerySchema,
 	managePhotoAlbumsSchema,
 } from "./photos-interfaces.ts";
-import { MultipartFile } from "@fastify/multipart";
+import {MultipartFile} from "@fastify/multipart";
 
 export async function photosRoutes(
 	fastify: FastifyInstance,
@@ -27,8 +27,8 @@ export async function photosRoutes(
 				return;
 			}
 
-			const {albumId} = queryResult.data;
-			const photos = await photosService.getAllPhotos(albumId);
+			const {albumId, q} = queryResult.data;
+			const photos = await photosService.getAllPhotos(albumId, q);
 			reply.send(photos);
 		} catch (error) {
 			console.error("Error getting photos:", error);
@@ -107,7 +107,7 @@ export async function photosRoutes(
 				return;
 			}
 
-			const data = await request.file() as MultipartFile;
+			const data = (await request.file()) as MultipartFile;
 
 			if (!data) {
 				reply.status(400).send({error: "No file uploaded"});
@@ -221,7 +221,10 @@ export async function photosRoutes(
 			}
 
 			const {id} = paramsResult.data;
-			const success = await photosService.managePhotoAlbums(id, bodyResult.data);
+			const success = await photosService.managePhotoAlbums(
+				id,
+				bodyResult.data
+			);
 
 			if (!success) {
 				reply.status(404).send({error: "Photo not found or invalid album IDs"});

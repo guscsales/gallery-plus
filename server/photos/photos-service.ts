@@ -2,7 +2,11 @@ import {randomUUID} from "crypto";
 import {DatabaseService} from "../services/database-service.ts";
 import {ImageService} from "../services/image-service.ts";
 import {Photo} from "../models.ts";
-import {CreatePhotoRequest, UpdatePhotoRequest, ManagePhotoAlbumsRequest} from "./photos-interfaces.ts";
+import {
+	CreatePhotoRequest,
+	UpdatePhotoRequest,
+	ManagePhotoAlbumsRequest,
+} from "./photos-interfaces.ts";
 
 export class PhotosService {
 	private dbService: DatabaseService;
@@ -13,39 +17,49 @@ export class PhotosService {
 		this.imageService = imageService;
 	}
 
-	private populatePhotoAlbums(photo: Photo, photosOnAlbums: Array<{photoId: string, albumId: string}>): Photo {
+	private populatePhotoAlbums(
+		photo: Photo,
+		photosOnAlbums: Array<{photoId: string; albumId: string}>
+	): Photo {
 		const albumIds = photosOnAlbums
-			.filter(relation => relation.photoId === photo.id)
-			.map(relation => relation.albumId);
-		
+			.filter((relation) => relation.photoId === photo.id)
+			.map((relation) => relation.albumId);
+
 		return {
 			...photo,
-			albumIds
+			albumIds,
 		};
 	}
 
-	async getAllPhotos(albumId?: string): Promise<Photo[]> {
+	async getAllPhotos(albumId?: string, q?: string): Promise<Photo[]> {
 		const db = await this.dbService.readDatabase();
 
-		let photos: Photo[];
+		let photos: Photo[] = db.photos;
+
+		if (q) {
+			photos = photos.filter((photo) =>
+				photo.title.toLowerCase().includes(q.toLowerCase())
+			);
+		}
+
 		if (albumId) {
 			const photoIds = db.photosOnAlbums
 				.filter((relation) => relation.albumId === albumId)
 				.map((relation) => relation.photoId);
 
-			photos = db.photos.filter((photo) => photoIds.includes(photo.id));
-		} else {
-			photos = db.photos;
+			photos = photos.filter((photo) => photoIds.includes(photo.id));
 		}
 
 		// Populate albumIds for each photo
-		return photos.map(photo => this.populatePhotoAlbums(photo, db.photosOnAlbums));
+		return photos.map((photo) =>
+			this.populatePhotoAlbums(photo, db.photosOnAlbums)
+		);
 	}
 
 	async getPhotoById(id: string): Promise<Photo | null> {
 		const db = await this.dbService.readDatabase();
 		const photo = db.photos.find((photo) => photo.id === id);
-		
+
 		if (!photo) {
 			return null;
 		}
@@ -151,8 +165,7 @@ export class PhotosService {
 		}
 
 		const relationExists = db.photosOnAlbums.some(
-			(relation) =>
-				relation.photoId === photoId && relation.albumId === albumId
+			(relation) => relation.photoId === photoId && relation.albumId === albumId
 		);
 
 		if (relationExists) {
@@ -168,7 +181,10 @@ export class PhotosService {
 		return true;
 	}
 
-	async managePhotoAlbums(photoId: string, albumsData: ManagePhotoAlbumsRequest): Promise<boolean> {
+	async managePhotoAlbums(
+		photoId: string,
+		albumsData: ManagePhotoAlbumsRequest
+	): Promise<boolean> {
 		const db = await this.dbService.readDatabase();
 
 		// Check if photo exists
@@ -178,7 +194,7 @@ export class PhotosService {
 		}
 
 		// Check if all provided albums exist
-		const { albumIds } = albumsData;
+		const {albumIds} = albumsData;
 		for (const albumId of albumIds) {
 			const albumExists = db.albums.some((album) => album.id === albumId);
 			if (!albumExists) {
@@ -196,15 +212,19 @@ export class PhotosService {
 		const desiredSet = new Set(albumIds);
 
 		// Albums to add: in desired but not in current
-		const albumsToAdd = [...desiredSet].filter(albumId => !currentSet.has(albumId));
+		const albumsToAdd = [...desiredSet].filter(
+			(albumId) => !currentSet.has(albumId)
+		);
 
-		// Albums to remove: in current but not in desired  
-		const albumsToRemove = [...currentSet].filter(albumId => !desiredSet.has(albumId));
+		// Albums to remove: in current but not in desired
+		const albumsToRemove = [...currentSet].filter(
+			(albumId) => !desiredSet.has(albumId)
+		);
 
 		// Remove photo from albums that should no longer contain it
 		db.photosOnAlbums = db.photosOnAlbums.filter(
-			(relation) => 
-				relation.photoId !== photoId || 
+			(relation) =>
+				relation.photoId !== photoId ||
 				!albumsToRemove.includes(relation.albumId)
 		);
 

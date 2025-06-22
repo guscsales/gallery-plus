@@ -7,8 +7,12 @@ import Button from "../components/button";
 import PhotoImage from "../core-components/photo-image";
 import InputCheckbox from "../components/input-checkbox";
 import Divider from "../components/divider";
+import useAlbums from "../hooks/use-albums";
+import Skeleton from "../components/skeleton";
 
 export default function PagePhotoDetails() {
+	const {albums, isLoading} = useAlbums();
+
 	return (
 		<Container>
 			<header className="flex items-center justify-between gap-8 mb-8">
@@ -38,34 +42,22 @@ export default function PagePhotoDetails() {
 						Álbuns
 					</Text>
 
-					<ul className="flex flex-col">
-						<li>
-							<div className="flex items-center justify-between">
-								<Text variant="paragraph-large">Natureza</Text>
-								<InputCheckbox />
-							</div>
-							<Divider className="my-4" />
-						</li>
-						<li>
-							<div className="flex items-center justify-between">
-								<Text variant="paragraph-large">Viagem</Text>
-								<InputCheckbox />
-							</div>
-							<Divider className="my-4" />
-						</li>
-						<li>
-							<div className="flex items-center justify-between">
-								<Text variant="paragraph-large">Fotografia</Text>
-								<InputCheckbox />
-							</div>
-							<Divider className="my-4" />
-						</li>
-						<li>
-							<div className="flex items-center justify-between">
-								<Text variant="paragraph-large">Arquitetura</Text>
-								<InputCheckbox />
-							</div>
-						</li>
+					<ul className="flex flex-col gap-4">
+						{isLoading &&
+							Array.from({length: 5}).map((_, index) => (
+								<li key={index}>
+									<Skeleton className="h-[2.5rem]" />
+								</li>
+							))}
+						{albums?.map((album, index) => (
+							<li key={album.id}>
+								<div className="flex items-center justify-between">
+									<Text variant="paragraph-large">{album.title}</Text>
+									<InputCheckbox />
+								</div>
+								{index !== albums.length - 1 && <Divider className="mt-4" />}
+							</li>
+						))}
 					</ul>
 				</div>
 			</div>

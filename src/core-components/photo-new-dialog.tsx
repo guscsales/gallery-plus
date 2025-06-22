@@ -15,6 +15,7 @@ import InputText from "../components/input-text";
 import Text from "../components/text";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import useAlbums from "../hooks/use-albums";
 
 interface PhotoNewDialogProps {
 	trigger: React.ReactNode;
@@ -34,6 +35,8 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 	});
 	const file = form.watch("file");
 	const filePreview = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
+
+	const {albums, isLoading} = useAlbums();
 
 	return (
 		<Dialog>
@@ -69,21 +72,15 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 						<div className="flex flex-col gap-3">
 							<Text variant="label-small">Selecionar álbuns</Text>
 							<div className="flex flex-wrap gap-3">
-								<Button variant="primary" size="sm">
-									Viagem
-								</Button>
-								<Button variant="ghost" size="sm">
-									Natureza
-								</Button>
-								<Button variant="ghost" size="sm">
-									Gastronomia
-								</Button>
-								<Button variant="ghost" size="sm">
-									Fotografia
-								</Button>
-								<Button variant="ghost" size="sm">
-									Pets
-								</Button>
+								{isLoading &&
+									Array.from({length: 5}).map((_, index) => (
+										<Button loading key={index} />
+									))}
+								{albums?.map((album) => (
+									<Button variant="ghost" size="sm">
+										{album.title}
+									</Button>
+								))}
 							</div>
 						</div>
 					</form>

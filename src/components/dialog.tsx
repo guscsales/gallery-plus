@@ -74,9 +74,11 @@ export function DialogHeader({
 				className={cx("flex items-center justify-between", className)}
 				{...props}
 			>
-				<Text variant="heading-medium" className="flex-1">
-					{children}
-				</Text>
+				<DialogPrimitive.Title>
+					<Text variant="heading-medium" className="flex-1">
+						{children}
+					</Text>
+				</DialogPrimitive.Title>
 				<DialogClose asChild>
 					<ButtonIcon icon={XIcon} variant="ghost" />
 				</DialogClose>

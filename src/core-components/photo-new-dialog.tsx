@@ -13,13 +13,25 @@ import {
 import InputSingleFile from "../components/input-single-file";
 import InputText from "../components/input-text";
 import Text from "../components/text";
+import {z} from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 interface PhotoNewDialogProps {
 	trigger: React.ReactNode;
 }
 
+const photoNewFormSchema = z.object({
+	title: z.string().min(1, {message: "Campo obrigatório"}).max(255),
+	file: z.instanceof(FileList),
+	albumsIds: z.array(z.string().uuid()).optional(),
+});
+
+type PhotoNewForm = z.infer<typeof photoNewFormSchema>;
+
 export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
-	const form = useForm();
+	const form = useForm<PhotoNewForm>({
+		resolver: zodResolver(photoNewFormSchema),
+	});
 	const file = form.watch("file");
 	const filePreview = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
 
@@ -32,6 +44,7 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 					<form className="flex flex-col gap-5">
 						<InputText
 							placeholder="Adicione um título"
+							maxLength={255}
 							{...form.register("title")}
 						/>
 
@@ -76,7 +89,7 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 					</form>
 				</DialogBody>
 				<DialogFooter>
-					<DialogClose>
+					<DialogClose asChild>
 						<Button variant="secondary">Cancelar</Button>
 					</DialogClose>
 					<Button>Adicionar</Button>

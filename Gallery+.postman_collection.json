@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "876e8a75-afd4-411c-87d5-3a5390ea7d6e",
+		"name": "Gallery+",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18825863"
+	},
+	"item": [
+		{
+			"name": "Fetch Photos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/photos",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "089d853d-11bd-44df-bc57-5ddf9b5d6c45",
+							"disabled": true
+						},
+						{
+							"key": "q",
+							"value": "fo",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Photo by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/photos/64413f7b-d117-44e5-ba32-84545bbeaaa9",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos",
+						"64413f7b-d117-44e5-ba32-84545bbeaaa9"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Photo by ID Copy",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Foto atualizada\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/photos/015f90ba-2979-49c7-8cc1-13037d383b68",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos",
+						"015f90ba-2979-49c7-8cc1-13037d383b68"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Photo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Foto atualizada\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/photos/015f90ba-2979-49c7-8cc1-13037d383b68",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos",
+						"015f90ba-2979-49c7-8cc1-13037d383b68"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Photo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"ABC\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/photos",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Photo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/guscsales/workspace/rocketseat/gallery-plus/public/images/portrait-shadow.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/photos/64413f7b-d117-44e5-ba32-84545bbeaaa9/image",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos",
+						"64413f7b-d117-44e5-ba32-84545bbeaaa9",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Manage Photo Albums",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"albumIds\": [\n        \"089d853d-11bd-44df-bc57-5ddf9b5d6c45\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/photos/64413f7b-d117-44e5-ba32-84545bbeaaa9/albums",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"photos",
+						"64413f7b-d117-44e5-ba32-84545bbeaaa9",
+						"albums"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Albums",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/albums",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"albums"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Album by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/albums/f26fe3d7-75ba-4f70-a8f2-b5e9f85afc5c",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"albums",
+						"f26fe3d7-75ba-4f70-a8f2-b5e9f85afc5c"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Album",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Album 5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/albums",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"albums"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Album",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Album 1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/albums/2a9a8f06-5e7f-4819-b72d-590e322338cb",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"albums",
+						"2a9a8f06-5e7f-4819-b72d-590e322338cb"
+					],
+					"query": [
+						{
+							"key": "albumId",
+							"value": "123",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

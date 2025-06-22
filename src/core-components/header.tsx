@@ -6,6 +6,8 @@ import Divider from "../components/divider";
 import Button from "../components/button";
 import cx from "classnames";
 import {Link} from "react-router";
+import PhotoNewDialog from "./photo-new-dialog";
+import AlbumNewDialog from "./album-new-dialog";
 
 interface HeaderProps extends React.ComponentProps<"div"> {}
 
@@ -26,8 +28,10 @@ export default function Header({className, ...props}: HeaderProps) {
 			/>
 			<Divider orientation="vertical" className="h-10" />
 			<div className="flex items-center gap-3">
-				<Button>Nova foto</Button>
-				<Button variant="secondary">Criar álbum</Button>
+				<PhotoNewDialog trigger={<Button>Nova foto</Button>} />
+				<AlbumNewDialog
+					trigger={<Button variant="secondary">Criar álbum</Button>}
+				/>
 			</div>
 		</Container>
 	);

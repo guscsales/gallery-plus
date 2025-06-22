@@ -55,7 +55,7 @@ export function DialogContent({
 				)}
 				{...props}
 			>
-				<Card size="md" variant="primary">
+				<Card size="lg" variant="primary">
 					{children}
 				</Card>
 			</DialogPrimitive.Content>

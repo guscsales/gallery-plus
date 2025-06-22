@@ -25,6 +25,7 @@ export const inputCheckboxVariants = tv({
         `,
 		},
 		size: {
+			sm: "w-3 h-3 rounded-sm",
 			md: "w-5 h-5 rounded-sm",
 		},
 		disabled: {
@@ -46,6 +47,7 @@ export const inputCheckboxIconVariants = tv({
     `,
 	variants: {
 		size: {
+			sm: "w-3 h-3 left-px",
 			md: "w-4 h-4 left-0.5",
 		},
 	},

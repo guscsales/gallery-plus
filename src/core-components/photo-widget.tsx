@@ -4,6 +4,7 @@ import Badge from "../components/badge";
 import {Link} from "react-router";
 import {AppRoutes} from "../App";
 import {buttonTextVariants, buttonVariants} from "../components/button";
+import PhotoImage from "./photo-image";
 
 interface PhotoWidgetProps {
 	photo: Photo;
@@ -12,13 +13,11 @@ interface PhotoWidgetProps {
 export default function PhotoWidget({photo}: PhotoWidgetProps) {
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="rounded-lg overflow-hidden">
-				<img
-					src={photo.imageId}
-					alt={photo.title}
-					className="w-full h-44 object-cover"
-				/>
-			</div>
+			<PhotoImage
+				imageId={photo.imageId}
+				title={photo.title}
+				imageClassName="h-44"
+			/>
 			<div className="flex flex-col gap-2">
 				<Text variant="paragraph-large">{photo.title}</Text>
 				<div className="flex gap-1 min-h-[1.375rem]">
@@ -34,9 +33,14 @@ export default function PhotoWidget({photo}: PhotoWidgetProps) {
 			</div>
 			<Link
 				to={AppRoutes.PHOTO_DETAILS.replace(":id", photo.id)}
-				className={buttonVariants({variant: "secondary"})}
+				className={buttonVariants({
+					variant: "secondary",
+					className: "px-2 py-2",
+				})}
 			>
-				<Text className={buttonTextVariants({variant: "secondary"})}>
+				<Text
+					className={buttonTextVariants({variant: "secondary", size: "sm"})}
+				>
 					Detalhes da imagem
 				</Text>
 			</Link>

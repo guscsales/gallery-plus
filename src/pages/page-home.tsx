@@ -1,7 +1,7 @@
 import Container from "../components/container";
 import PhotosList from "../core-components/photos-list";
 import Text from "../components/text";
-import Badge from "../components/badge";
+import Button from "../components/button";
 
 export default function PageHome() {
 	return (
@@ -9,12 +9,24 @@ export default function PageHome() {
 			<div className="flex items-center gap-3.5 mb-9">
 				<Text variant="heading-small">Álbuns</Text>
 				<div className="flex gap-3">
-					<Badge className="cursor-pointer">Todos</Badge>
-					<Badge className="cursor-pointer">Natureza</Badge>
-					<Badge className="cursor-pointer">Viagem</Badge>
-					<Badge className="cursor-pointer">Gastronomia</Badge>
-					<Badge className="cursor-pointer">Fotografia</Badge>
-					<Badge className="cursor-pointer">Pets</Badge>
+					<Button variant="primary" size="sm" className="cursor-pointer">
+						Todos
+					</Button>
+					<Button variant="ghost" size="sm" className="cursor-pointer">
+						Natureza
+					</Button>
+					<Button variant="ghost" size="sm" className="cursor-pointer">
+						Viagem
+					</Button>
+					<Button variant="ghost" size="sm" className="cursor-pointer">
+						Gastronomia
+					</Button>
+					<Button variant="ghost" size="sm" className="cursor-pointer">
+						Fotografia
+					</Button>
+					<Button variant="ghost" size="sm" className="cursor-pointer">
+						Pets
+					</Button>
 				</div>
 			</div>
 

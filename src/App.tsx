@@ -15,6 +15,12 @@ export default function App() {
 				<Button disabled>Button</Button>
 				<Button handling>Loading</Button>
 				<Button icon={ChevronRightIcon}>Próxima Imagem</Button>
+				<Button variant="ghost" size="sm">
+					Button
+				</Button>
+				<Button variant="primary" size="sm">
+					Button
+				</Button>
 			</div>
 
 			<div className="flex gap-3">

@@ -9,7 +9,7 @@ import Skeleton from "../components/skeleton";
 
 interface PhotoWidgetProps {
 	photo: Photo;
-	loading: boolean;
+	loading?: boolean;
 }
 
 export default function PhotoWidget({photo, loading}: PhotoWidgetProps) {
@@ -19,10 +19,10 @@ export default function PhotoWidget({photo, loading}: PhotoWidgetProps) {
 				<PhotoImage
 					imageId={`${import.meta.env.VITE_IMAGES_URL}/${photo.imageId}`}
 					title={photo.title}
-					imageClassName="h-44"
+					imageClassName="w-[10.875rem] h-[10.875rem]"
 				/>
 			) : (
-				<Skeleton className="w-44 h-44 rounded-lg" />
+				<Skeleton className="w-[10.875rem] h-[10.875rem] rounded-lg" />
 			)}
 			<div className="flex flex-col gap-2">
 				{!loading ? (

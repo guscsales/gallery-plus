@@ -23,6 +23,7 @@
     "axios": "^1.10.0",
     "classnames": "^2.5.1",
     "fastify": "^4.24.3",
+    "nuqs": "^2.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.58.1",

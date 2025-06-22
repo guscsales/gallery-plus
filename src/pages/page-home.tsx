@@ -7,14 +7,19 @@ import useAlbums from "../hooks/use-albums";
 
 export default function PageHome() {
 	const {albums, isLoadingAlbums} = useAlbums();
-	const {photos, isLoadingPhotos} = usePhotos();
+	const {photos, isLoadingPhotos, filters} = usePhotos();
 
 	return (
 		<Container>
 			<div className="flex items-center gap-3.5 mb-9">
 				<Text variant="heading-small">Álbuns</Text>
 				<div className="flex gap-3">
-					<Button variant="primary" size="sm" className="cursor-pointer">
+					<Button
+						variant={filters.albumId === null ? "primary" : "ghost"}
+						size="sm"
+						className="cursor-pointer"
+						onClick={() => filters.setAlbumId(null)}
+					>
 						Todos
 					</Button>
 					{isLoadingAlbums &&
@@ -23,10 +28,11 @@ export default function PageHome() {
 						))}
 					{albums?.map((album) => (
 						<Button
-							variant="ghost"
+							variant={filters.albumId === album.id ? "primary" : "ghost"}
 							size="sm"
 							className="cursor-pointer"
 							key={album.id}
+							onClick={() => filters.setAlbumId(album.id)}
 						>
 							{album.title}
 						</Button>

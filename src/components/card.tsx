@@ -13,6 +13,7 @@ export const cardVariants = tv({
 		size: {
 			none: "",
 			md: "p-3",
+			lg: "p-6",
 		},
 	},
 	defaultVariants: {

@@ -10,6 +10,6 @@ export default function useAlbums() {
 
 	return {
 		albums: data,
-		isLoading,
+		isLoadingAlbums: isLoading,
 	};
 }

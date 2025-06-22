@@ -11,7 +11,7 @@ import useAlbums from "../hooks/use-albums";
 import Skeleton from "../components/skeleton";
 
 export default function PagePhotoDetails() {
-	const {albums, isLoading} = useAlbums();
+	const {albums, isLoadingAlbums} = useAlbums();
 
 	return (
 		<Container>
@@ -43,7 +43,7 @@ export default function PagePhotoDetails() {
 					</Text>
 
 					<ul className="flex flex-col gap-4">
-						{isLoading &&
+						{isLoadingAlbums &&
 							Array.from({length: 5}).map((_, index) => (
 								<li key={index}>
 									<Skeleton className="h-[2.5rem]" />

@@ -36,7 +36,7 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 	const file = form.watch("file");
 	const filePreview = file?.[0] ? URL.createObjectURL(file[0]) : undefined;
 
-	const {albums, isLoading} = useAlbums();
+	const {albums, isLoadingAlbums} = useAlbums();
 
 	return (
 		<Dialog>
@@ -72,7 +72,7 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 						<div className="flex flex-col gap-3">
 							<Text variant="label-small">Selecionar álbuns</Text>
 							<div className="flex flex-wrap gap-3">
-								{isLoading &&
+								{isLoadingAlbums &&
 									Array.from({length: 5}).map((_, index) => (
 										<Button loading key={index} />
 									))}

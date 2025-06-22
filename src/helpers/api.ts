@@ -1,7 +1,7 @@
 import axios, {type AxiosRequestConfig} from "axios";
 
 export const api = axios.create({
-	baseURL: "http://localhost:5799",
+	baseURL: import.meta.env.VITE_API_URL,
 });
 
 export function fetcher(url: string, options: AxiosRequestConfig = {}) {

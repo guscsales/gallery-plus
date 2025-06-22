@@ -3,6 +3,7 @@ import {z} from "zod";
 // Zod schemas for validation
 export const createPhotoSchema = z.object({
 	title: z.string().min(1).max(255),
+	albumsIds: z.array(z.string().uuid()).optional(),
 });
 
 export const updatePhotoSchema = z.object({

@@ -81,7 +81,7 @@ export class PhotosService {
 		const photo: Photo = {
 			id: photoId,
 			title: photoData.title,
-			albumIds: [], // New photos start with no albums
+			albumIds: photoData.albumsIds || [],
 			// imageId will be added when image is uploaded
 		};
 

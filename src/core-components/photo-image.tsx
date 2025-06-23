@@ -21,7 +21,7 @@ export const photoImageImageVariants = tv({
 interface PhotoImageProps
 	extends Omit<React.ComponentProps<"div">, "onSelect"> {
 	imageId: string;
-	title: string;
+	title?: string;
 	imageClassName?: string;
 	selectable?: boolean;
 	selected?: boolean;

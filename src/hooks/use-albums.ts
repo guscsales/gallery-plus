@@ -9,7 +9,7 @@ export default function useAlbums() {
 	});
 
 	return {
-		albums: data,
+		albums: data || [],
 		isLoadingAlbums: isLoading,
 	};
 }

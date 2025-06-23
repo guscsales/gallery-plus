@@ -64,7 +64,12 @@ export class PhotosService {
 		return populatedPhotos;
 	}
 
-	async getPhotoById(id: string): Promise<Photo | null> {
+	async getPhotoById(
+		id: string
+	): Promise<
+		| (Photo & {nextPhotoId: string | null; previousPhotoId: string | null})
+		| null
+	> {
 		const db = await this.dbService.readDatabase();
 		const photo = db.photos.find((photo) => photo.id === id);
 
@@ -72,7 +77,22 @@ export class PhotosService {
 			return null;
 		}
 
-		return await this.populatePhotoAlbums(photo, db.photosOnAlbums);
+		const photos = await this.getAllPhotos();
+
+		const nextPhoto =
+			photos.findIndex((p) => p.id === photo.id) + 1 < photos.length
+				? photos[photos.findIndex((p) => p.id === photo.id) + 1].id
+				: null;
+		const previousPhoto =
+			photos.findIndex((p) => p.id === photo.id) - 1 >= 0
+				? photos[photos.findIndex((p) => p.id === photo.id) - 1].id
+				: null;
+
+		return {
+			...(await this.populatePhotoAlbums(photo, db.photosOnAlbums)),
+			nextPhotoId: nextPhoto,
+			previousPhotoId: previousPhoto,
+		};
 	}
 
 	async createPhoto(photoData: CreatePhotoRequest): Promise<Photo> {

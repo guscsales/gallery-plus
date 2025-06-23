@@ -9,12 +9,16 @@ import InputCheckbox from "../components/input-checkbox";
 import Divider from "../components/divider";
 import useAlbums from "../hooks/use-albums";
 import Skeleton from "../components/skeleton";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import usePhoto from "../hooks/use-photo";
+import {AppRoutes} from "../App";
 
 export default function PagePhotoDetails() {
 	const {id} = useParams();
-	const {photo, isLoadingPhoto} = usePhoto(id || "");
+	const navigate = useNavigate();
+	const {photo, isLoadingPhoto, nextPhotoId, previousPhotoId} = usePhoto(
+		id || ""
+	);
 	const {albums, isLoadingAlbums} = useAlbums();
 
 	if (!isLoadingPhoto && !photo) {
@@ -32,8 +36,29 @@ export default function PagePhotoDetails() {
 				<div className="flex gap-2">
 					{!isLoadingPhoto ? (
 						<>
-							<ButtonIcon variant="secondary" icon={ArrowLeftIcon} />
-							<Button variant="secondary" icon={ArrowRightIcon}>
+							<ButtonIcon
+								variant="secondary"
+								icon={ArrowLeftIcon}
+								onClick={() =>
+									navigate(
+										AppRoutes.PHOTO_DETAILS.replace(
+											":id",
+											previousPhotoId || ""
+										)
+									)
+								}
+								disabled={!previousPhotoId}
+							/>
+							<Button
+								variant="secondary"
+								icon={ArrowRightIcon}
+								onClick={() =>
+									navigate(
+										AppRoutes.PHOTO_DETAILS.replace(":id", nextPhotoId || "")
+									)
+								}
+								disabled={!nextPhotoId}
+							>
 								Próxima imagem
 							</Button>
 						</>

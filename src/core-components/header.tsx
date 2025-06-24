@@ -3,9 +3,9 @@ import Logo from "../assets/images/galeria-plus-full-logo.svg?react";
 import Button from "../components/button";
 import cx from "classnames";
 import {Link, useLocation} from "react-router";
-import PhotoNewDialog from "./photo-new-dialog";
-import AlbumNewDialog from "./album-new-dialog";
-import PhotosSearch from "./photos-search";
+import PhotoNewDialog from "../contexts/photos/components/photo-new-dialog";
+import AlbumNewDialog from "../contexts/albums/components/album-new-dialog";
+import PhotosSearch from "../contexts/photos/components/photos-search";
 import {AppRoutes} from "../App";
 
 interface HeaderProps extends React.ComponentProps<"div"> {}

@@ -1,11 +1,11 @@
 import {type Photo} from "../models/photo";
-import Text from "../components/text";
-import Badge from "../components/badge";
+import Text from "../../../components/text";
+import Badge from "../../../components/badge";
 import {Link} from "react-router";
-import {AppRoutes} from "../App";
-import {buttonTextVariants, buttonVariants} from "../components/button";
+import {AppRoutes} from "../../../App";
+import {buttonTextVariants, buttonVariants} from "../../../components/button";
 import PhotoImage from "./photo-image";
-import Skeleton from "../components/skeleton";
+import Skeleton from "../../../components/skeleton";
 
 interface PhotoWidgetProps {
 	photo: Photo;

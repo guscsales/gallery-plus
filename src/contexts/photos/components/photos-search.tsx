@@ -1,8 +1,8 @@
-import InputText from "../components/input-text";
-import SearchIcon from "../assets/icons/search.svg?react";
-import Divider from "../components/divider";
+import InputText from "../../../components/input-text";
+import SearchIcon from "../../../assets/icons/search.svg?react";
+import Divider from "../../../components/divider";
 import usePhotos from "../hooks/use-photos";
-import {debounce} from "../helpers/utils";
+import {debounce} from "../../../helpers/utils";
 import React from "react";
 
 export default function PhotosSearch() {

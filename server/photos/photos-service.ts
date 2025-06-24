@@ -101,7 +101,7 @@ export class PhotosService {
 		const photo: Photo = {
 			id: photoId,
 			title: photoData.title,
-			albumIds: photoData.albumsIds || [],
+			albumsIds: photoData.albumsIds || [],
 			// imageId will be added when image is uploaded
 		};
 
@@ -228,8 +228,8 @@ export class PhotosService {
 		}
 
 		// Check if all provided albums exist
-		const {albumIds} = albumsData;
-		for (const albumId of albumIds) {
+		const {albumsIds} = albumsData;
+		for (const albumId of albumsIds) {
 			const albumExists = db.albums.some((album) => album.id === albumId);
 			if (!albumExists) {
 				return false;
@@ -237,13 +237,13 @@ export class PhotosService {
 		}
 
 		// Get current albums for this photo
-		const currentAlbumIds = db.photosOnAlbums
+		const currentAlbumsIds = db.photosOnAlbums
 			.filter((relation) => relation.photoId === photoId)
 			.map((relation) => relation.albumId);
 
 		// Use Sets to calculate differences
-		const currentSet = new Set(currentAlbumIds);
-		const desiredSet = new Set(albumIds);
+		const currentSet = new Set(currentAlbumsIds);
+		const desiredSet = new Set(albumsIds);
 
 		// Albums to add: in desired but not in current
 		const albumsToAdd = [...desiredSet].filter(

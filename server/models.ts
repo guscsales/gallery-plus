@@ -2,7 +2,7 @@ export interface Photo {
 	id: string;
 	title: string;
 	imageId?: string;
-	albumIds?: string[];
+	albumsIds?: string[];
 }
 
 export interface Album {

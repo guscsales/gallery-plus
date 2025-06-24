@@ -23,6 +23,7 @@ export interface InputSingleFileProps
 	allowedExtensions: string[];
 	maxFileSizeInMB: number;
 	replaceBy: React.ReactNode;
+	error?: React.ReactNode;
 }
 
 export default function InputSingleFile({
@@ -31,6 +32,7 @@ export default function InputSingleFile({
 	allowedExtensions,
 	maxFileSizeInMB,
 	replaceBy,
+	error,
 	...props
 }: InputSingleFileProps) {
 	const formValues = useWatch({control: form.control});
@@ -109,6 +111,11 @@ export default function InputSingleFile({
 					{maxFileSizeInMB && fileSize > maxFileSizeInMB * 1024 * 1024 && (
 						<Text variant="label-small" className="text-accent-red">
 							O arquivo é maior que o tamanho máximo
+						</Text>
+					)}
+					{error && (
+						<Text variant="label-small" className="text-accent-red">
+							{error}
 						</Text>
 					)}
 				</>

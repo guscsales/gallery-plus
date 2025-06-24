@@ -1,5 +1,5 @@
 import {tv} from "tailwind-variants";
-import InputCheckbox from "../components/input-checkbox";
+import InputCheckbox from "../../../components/input-checkbox";
 import React from "react";
 
 export const photoImageVariants = tv({
@@ -15,7 +15,7 @@ export const photoImageVariants = tv({
 });
 
 export const photoImageImageVariants = tv({
-	base: "w-full object-cover",
+	base: "w-full h-full object-cover",
 });
 
 interface PhotoImageProps

@@ -1,5 +1,5 @@
 import {useForm} from "react-hook-form";
-import Button from "../components/button";
+import Button from "../../../components/button";
 import {
 	Dialog,
 	DialogBody,
@@ -8,11 +8,11 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTrigger,
-} from "../components/dialog";
-import InputText from "../components/input-text";
-import Text from "../components/text";
-import PhotoImage from "./photo-image";
-import SelectCheckboxIllustration from "../assets/images/select-checkbox.svg?react";
+} from "../../../components/dialog";
+import InputText from "../../../components/input-text";
+import Text from "../../../components/text";
+import PhotoImage from "../../photos/components/photo-image";
+import SelectCheckboxIllustration from "../../../assets/images/select-checkbox.svg?react";
 
 interface PhotoNewDialogProps {
 	trigger: React.ReactNode;

@@ -4,6 +4,7 @@ import React from "react";
 import {textVariants} from "./text";
 import Icon from "./icon";
 import SpinnerIcon from "../assets/icons/spinner.svg?react";
+import Text from "./text";
 
 export const inputTextWrapperVariants = tv({
 	base: `
@@ -48,6 +49,7 @@ interface InputTextProps
 		Omit<React.ComponentProps<"input">, "size" | "disabled"> {
 	icon?: React.ComponentProps<typeof Icon>["svg"];
 	handling?: boolean;
+	error?: React.ReactNode;
 }
 
 export default function InputText({
@@ -56,22 +58,30 @@ export default function InputText({
 	className,
 	icon,
 	handling,
+	error,
 	...props
 }: InputTextProps) {
 	return (
-		<div className={inputTextWrapperVariants({size, disabled, className})}>
-			{(icon || handling) && (
-				<Icon
-					svg={handling ? SpinnerIcon : icon!}
-					animate={handling}
-					className={inputTextIconVariants({size})}
+		<div className="flex flex-col gap-1">
+			<div className={inputTextWrapperVariants({size, disabled, className})}>
+				{(icon || handling) && (
+					<Icon
+						svg={handling ? SpinnerIcon : icon!}
+						animate={handling}
+						className={inputTextIconVariants({size})}
+					/>
+				)}
+				<input
+					className={cx(inputTextVariants(), textVariants())}
+					disabled={disabled as boolean}
+					{...props}
 				/>
+			</div>
+			{error && (
+				<Text variant="label-small" className="text-accent-red">
+					{error}
+				</Text>
 			)}
-			<input
-				className={cx(inputTextVariants(), textVariants())}
-				disabled={disabled as boolean}
-				{...props}
-			/>
 		</div>
 	);
 }

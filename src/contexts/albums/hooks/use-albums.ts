@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {fetcher} from "../helpers/api";
+import {fetcher} from "../../../helpers/api";
 import type {Album} from "../models/album";
 
 export default function useAlbums() {

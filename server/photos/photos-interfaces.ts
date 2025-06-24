@@ -20,7 +20,7 @@ export const photoQuerySchema = z.object({
 });
 
 export const managePhotoAlbumsSchema = z.object({
-	albumIds: z.array(z.string().uuid()),
+	albumsIds: z.array(z.string().uuid()),
 });
 
 // TypeScript types derived from schemas

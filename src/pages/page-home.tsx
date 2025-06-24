@@ -1,9 +1,9 @@
 import Container from "../components/container";
-import PhotosList from "../core-components/photos-list";
+import PhotosList from "../contexts/photos/components/photos-list";
 import Text from "../components/text";
 import Button from "../components/button";
-import usePhotos from "../hooks/use-photos";
-import useAlbums from "../hooks/use-albums";
+import usePhotos from "../contexts/photos/hooks/use-photos";
+import useAlbums from "../contexts/albums/hooks/use-albums";
 
 export default function PageHome() {
 	const {albums, isLoadingAlbums} = useAlbums();

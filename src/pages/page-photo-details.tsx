@@ -4,13 +4,13 @@ import Text from "../components/text";
 import ArrowLeftIcon from "../assets/icons/chevron-left.svg?react";
 import ArrowRightIcon from "../assets/icons/chevron-right.svg?react";
 import Button from "../components/button";
-import PhotoImage from "../core-components/photo-image";
+import PhotoImage from "../contexts/photos/components/photo-image";
 import InputCheckbox from "../components/input-checkbox";
 import Divider from "../components/divider";
-import useAlbums from "../hooks/use-albums";
+import useAlbums from "../contexts/albums/hooks/use-albums";
 import Skeleton from "../components/skeleton";
 import {useNavigate, useParams} from "react-router";
-import usePhoto from "../hooks/use-photo";
+import usePhoto from "../contexts/photos/hooks/use-photo";
 import {AppRoutes} from "../App";
 
 export default function PagePhotoDetails() {

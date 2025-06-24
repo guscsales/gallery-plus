@@ -2,7 +2,7 @@ import * as React from "react";
 import {tv, type VariantProps} from "tailwind-variants";
 import {useWatch} from "react-hook-form";
 import Icon from "./icon";
-import Text from "./text";
+import Text, {textVariants} from "./text";
 import Card from "./card";
 import FileImageIcon from "../assets/icons/image.svg?react";
 import UploadFileIcon from "../assets/icons/upload-file.svg?react";
@@ -63,16 +63,19 @@ export default function InputSingleFile({
 									</Text>
 								</div>
 								<div className="flex gap-1">
-									<Text
-										as="button"
-										variant="label-small"
-										className="text-accent-red cursor-pointer hover:underline"
+									<button
+										type="button"
+										className={textVariants({
+											variant: "label-small",
+											className:
+												"text-accent-red cursor-pointer hover:underline",
+										})}
 										onClick={() => {
 											form.setValue(name, undefined);
 										}}
 									>
 										Remover
-									</Text>
+									</button>
 								</div>
 							</div>
 						</Card>

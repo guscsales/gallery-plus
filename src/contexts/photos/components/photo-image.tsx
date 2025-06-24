@@ -61,6 +61,7 @@ export default function PhotoImage({
 					size="sm"
 					checked={isSelected}
 					className="absolute top-1 left-1"
+					onChange={() => {}}
 				/>
 			)}
 			<img

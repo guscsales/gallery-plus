@@ -6,6 +6,10 @@ import Icon from "./icon";
 import SpinnerIcon from "../assets/icons/spinner.svg?react";
 import Text from "./text";
 
+export const inputTextContainerVariants = tv({
+	base: "flex flex-col gap-1",
+});
+
 export const inputTextWrapperVariants = tv({
 	base: `
 		border border-solid border-border-primary focus:border-border-active bg-transparent 
@@ -62,8 +66,8 @@ export default function InputText({
 	...props
 }: InputTextProps) {
 	return (
-		<div className="flex flex-col gap-1">
-			<div className={inputTextWrapperVariants({size, disabled, className})}>
+		<div className={inputTextContainerVariants({className})}>
+			<div className={inputTextWrapperVariants({size, disabled})}>
 				{(icon || handling) && (
 					<Icon
 						svg={handling ? SpinnerIcon : icon!}

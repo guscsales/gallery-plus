@@ -1,3 +1,4 @@
+import React from "react";
 import ButtonIcon from "../components/button-icon";
 import Container from "../components/container";
 import Text from "../components/text";
@@ -20,6 +21,15 @@ export default function PagePhotoDetails() {
 		id || ""
 	);
 	const {albums, isLoadingAlbums} = useAlbums();
+	const {deletePhoto} = usePhoto(id || "");
+
+	const [isDeleting, startDeleting] = React.useTransition();
+
+	async function handleDeletePhoto() {
+		startDeleting(async () => {
+			await deletePhoto(id || "");
+		});
+	}
 
 	if (!isLoadingPhoto && !photo) {
 		return <div>Foto não encontrada</div>;
@@ -84,7 +94,13 @@ export default function PagePhotoDetails() {
 					)}
 					<div>
 						{!isLoadingPhoto ? (
-							<Button variant="destructive">Excluir</Button>
+							<Button
+								variant="destructive"
+								onClick={handleDeletePhoto}
+								disabled={isDeleting}
+							>
+								{isDeleting ? "Excluindo..." : "Excluir"}
+							</Button>
 						) : (
 							<Skeleton className="w-20 h-10" />
 						)}

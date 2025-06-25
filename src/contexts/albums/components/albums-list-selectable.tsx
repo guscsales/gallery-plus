@@ -20,7 +20,7 @@ export default function AlbumsListSelectable({
 	const {managePhotoOnAlbums} = usePhotoAlbums();
 
 	function isChecked(albumId: string) {
-		return photo.albums.some((a) => a.id === albumId);
+		return photo?.albums?.some((a) => a.id === albumId);
 	}
 
 	async function handlePhotoOnAlbums(albumId: string) {

@@ -5,13 +5,13 @@ import ArrowLeftIcon from "../assets/icons/chevron-left.svg?react";
 import ArrowRightIcon from "../assets/icons/chevron-right.svg?react";
 import Button from "../components/button";
 import PhotoImage from "../contexts/photos/components/photo-image";
-import InputCheckbox from "../components/input-checkbox";
-import Divider from "../components/divider";
 import useAlbums from "../contexts/albums/hooks/use-albums";
 import Skeleton from "../components/skeleton";
 import {useNavigate, useParams} from "react-router";
 import usePhoto from "../contexts/photos/hooks/use-photo";
 import {AppRoutes} from "../App";
+import AlbumsListSelectable from "../contexts/albums/components/albums-list-selectable";
+import type {Photo} from "../contexts/photos/models/photo";
 
 export default function PagePhotoDetails() {
 	const {id} = useParams();
@@ -96,24 +96,11 @@ export default function PagePhotoDetails() {
 						Álbuns
 					</Text>
 
-					<ul className="flex flex-col gap-4">
-						{isLoadingAlbums &&
-							Array.from({length: 5}).map((_, index) => (
-								<li key={index}>
-									<Skeleton className="h-[2.5rem]" />
-								</li>
-							))}
-						{!isLoadingAlbums &&
-							albums?.map((album, index) => (
-								<li key={album.id}>
-									<div className="flex items-center justify-between">
-										<Text variant="paragraph-large">{album.title}</Text>
-										<InputCheckbox />
-									</div>
-									{index !== albums.length - 1 && <Divider className="mt-4" />}
-								</li>
-							))}
-					</ul>
+					<AlbumsListSelectable
+						loading={isLoadingAlbums}
+						albums={albums}
+						photo={photo as Photo}
+					/>
 				</div>
 			</div>
 		</Container>

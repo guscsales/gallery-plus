@@ -3,9 +3,11 @@ import {api} from "../../../helpers/api";
 import {toast} from "sonner";
 import type {AlbumNewForm} from "../schemas";
 import type {Album} from "../models/album";
+import usePhotoAlbums from "../../photos/hooks/use-photo-albums";
 
 export default function useAlbum() {
 	const queryClient = useQueryClient();
+	const {managePhotoOnAlbums} = usePhotoAlbums();
 
 	async function createAlbum(payload: AlbumNewForm) {
 		try {
@@ -16,9 +18,7 @@ export default function useAlbum() {
 			if (payload.photosIds) {
 				await Promise.all(
 					payload.photosIds.map((photoId) =>
-						api.put(`/photos/${photoId}/albums`, {
-							albumsIds: [data.id],
-						})
+						managePhotoOnAlbums(photoId, [data.id])
 					)
 				);
 			}

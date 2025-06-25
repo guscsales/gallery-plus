@@ -144,7 +144,7 @@ export default function Button({
 		>
 			<Text
 				variant="label-medium"
-				className={buttonTextVariants({variant, size})}
+				className={buttonTextVariants({variant, size, className: "truncate"})}
 			>
 				{children}
 			</Text>

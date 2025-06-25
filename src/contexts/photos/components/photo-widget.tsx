@@ -26,7 +26,7 @@ export default function PhotoWidget({photo, loading}: PhotoWidgetProps) {
 			)}
 			<div className="flex flex-col gap-2">
 				{!loading ? (
-					<Text variant="paragraph-large">{photo.title}</Text>
+					<Text variant="paragraph-large" className="truncate">{photo.title}</Text>
 				) : (
 					<Skeleton className="w-full h-6" />
 				)}
@@ -34,7 +34,7 @@ export default function PhotoWidget({photo, loading}: PhotoWidgetProps) {
 					{!loading ? (
 						<>
 							{photo.albums.slice(0, 1).map((album) => (
-								<Badge size="xs" key={album.id}>
+								<Badge className="truncate" size="xs" key={album.id}>
 									{album.title}
 								</Badge>
 							))}

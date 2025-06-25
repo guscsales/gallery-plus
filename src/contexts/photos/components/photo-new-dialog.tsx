@@ -113,6 +113,7 @@ export default function PhotoNewDialog({trigger}: PhotoNewDialogProps) {
 												albumsIds?.includes(album.id) ? "primary" : "ghost"
 											}
 											size="sm"
+											className="truncate"
 											onClick={() => handleToggleAlbum(album.id)}
 										>
 											{album.title}

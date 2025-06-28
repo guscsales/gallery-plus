@@ -11,7 +11,7 @@ export default function PageHome() {
 
 	return (
 		<Container>
-			<div className="flex items-center gap-3.5 mb-9">
+			<div className="flex items-center gap-3.5 mb-9 overflow-x-auto scrollbar-thin">
 				<Text variant="heading-small">Álbuns</Text>
 				<div className="flex gap-3">
 					<Button

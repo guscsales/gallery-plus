@@ -46,8 +46,8 @@ export default function AlbumsListSelectable({
 			{!loading &&
 				albums?.map((album, index) => (
 					<li key={album.id}>
-						<div className="flex items-center justify-between">
-							<Text variant="paragraph-large">{album.title}</Text>
+						<div className="flex items-center justify-between gap-1">
+							<Text variant="paragraph-large" className="truncate">{album.title}</Text>
 							<InputCheckbox
 								checked={isChecked(album.id)}
 								onClick={() => handlePhotoOnAlbums(album.id)}

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import 'tailwindcss';
+
 
 @theme {
 	--color-*: initial;
@@ -22,3 +24,5 @@
 
 	--font-sans: "Mulish", sans-serif;
 }
+
+@plugin 'tailwind-scrollbar';

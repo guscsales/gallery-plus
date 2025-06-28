@@ -107,7 +107,7 @@ export default function PagePhotoDetails() {
 					</div>
 				</div>
 
-				<div className="py-3">
+				<div className="py-3 truncate">
 					<Text as="div" variant="heading-medium" className="mb-7">
 						Álbuns
 					</Text>

@@ -48,9 +48,22 @@ export default function InputSingleFile({
 		return {fileExtension: extension, fileSize: size};
 	}, [formFile]);
 
+	function isValidExtension() {
+		console.log(formFile, fileExtension, allowedExtensions);
+		return allowedExtensions.includes(fileExtension);
+	}
+
+	function isValidSize() {
+		return fileSize <= maxFileSizeInMB * 1024 * 1024;
+	}
+
+	function isValidFile() {
+		return isValidExtension() && isValidSize();
+	}
+
 	return (
 		<div className={className}>
-			{formFile ? (
+			{isValidFile() ? (
 				<>
 					<div className="mb-5">{replaceBy}</div>
 					<div className="flex flex-col gap-2">
@@ -104,14 +117,12 @@ export default function InputSingleFile({
 							</div>
 						</Card>
 					</div>
-					{fileExtension &&
-						allowedExtensions &&
-						!allowedExtensions.includes(fileExtension) && (
-							<Text variant="label-small" className="text-accent-red">
-								Tipo de arquivo inválido
-							</Text>
-						)}
-					{maxFileSizeInMB && fileSize > maxFileSizeInMB * 1024 * 1024 && (
+					{formFile && !isValidExtension() && (
+						<Text variant="label-small" className="text-accent-red">
+							Tipo de arquivo inválido
+						</Text>
+					)}
+					{formFile && !isValidSize() && (
 						<Text variant="label-small" className="text-accent-red">
 							O arquivo é maior que o tamanho máximo
 						</Text>

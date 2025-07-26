@@ -1,46 +1,22 @@
 import Container from "../components/container";
-import PhotosList from "../contexts/photos/components/photos-list";
-import Text from "../components/text";
-import Button from "../components/button";
-import usePhotos from "../contexts/photos/hooks/use-photos";
+import AlbumsFilter from "../contexts/albums/components/albums-filter";
 import useAlbums from "../contexts/albums/hooks/use-albums";
+import PhotosList from "../contexts/photos/components/photos-list";
+import usePhotos from "../contexts/photos/hooks/use-photos";
 
 export default function PageHome() {
-	const {albums, isLoadingAlbums} = useAlbums();
-	const {photos, isLoadingPhotos, filters} = usePhotos();
+  const {albums, isLoadingAlbums} = useAlbums();
+  const {photos, isLoadingPhotos} = usePhotos();
 
-	return (
-		<Container>
-			<div className="flex items-center gap-3.5 mb-9 overflow-x-auto scrollbar-thin">
-				<Text variant="heading-small">Álbuns</Text>
-				<div className="flex gap-3">
-					<Button
-						variant={filters.albumId === null ? "primary" : "ghost"}
-						size="sm"
-						className="cursor-pointer"
-						onClick={() => filters.setAlbumId(null)}
-					>
-						Todos
-					</Button>
-					{isLoadingAlbums &&
-						Array.from({length: 5}).map((_, index) => (
-							<Button loading key={index} />
-						))}
-					{albums?.map((album) => (
-						<Button
-							variant={filters.albumId === album.id ? "primary" : "ghost"}
-							size="sm"
-							className="cursor-pointer"
-							key={album.id}
-							onClick={() => filters.setAlbumId(album.id)}
-						>
-							{album.title}
-						</Button>
-					))}
-				</div>
-			</div>
+  return (
+    <Container>
+      <AlbumsFilter
+        albums={albums}
+        loading={isLoadingAlbums}
+        className="mb-9"
+      />
 
-			<PhotosList photos={photos} loading={isLoadingPhotos} />
-		</Container>
-	);
+      <PhotosList photos={photos} loading={isLoadingPhotos} />
+    </Container>
+  );
 }

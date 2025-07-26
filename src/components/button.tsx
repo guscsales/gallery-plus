@@ -4,13 +4,11 @@ import Text from "./text";
 import {tv, type VariantProps} from "tailwind-variants";
 import SpinnerIcon from "../assets/icons/spinner.svg?react";
 import cx from "classnames";
-import Skeleton from "./skeleton";
 
 export const buttonVariants = tv({
 	base: "flex items-center justify-center cursor-pointer transition rounded group gap-1",
 	variants: {
 		variant: {
-			none: "",
 			primary: "bg-accent-brand hover:bg-accent-brand-light",
 			secondary: "bg-background-secondary hover:bg-background-tertiary",
 			destructive: "bg-background-secondary hover:bg-background-tertiary",
@@ -41,7 +39,6 @@ export const buttonVariants = tv({
 export const buttonTextVariants = tv({
 	variants: {
 		variant: {
-			none: "",
 			primary: "text-label-inverse",
 			secondary: "text-label",
 			destructive: "text-accent-red",
@@ -61,7 +58,6 @@ export const buttonTextVariants = tv({
 export const buttonIconVariants = tv({
 	variants: {
 		variant: {
-			none: "",
 			primary: "fill-label-inverse",
 			secondary: "fill-label",
 			destructive: "fill-accent-red",
@@ -81,24 +77,11 @@ export const buttonIconVariants = tv({
 	},
 });
 
-export const buttonSkeletonVariants = tv({
-	variants: {
-		size: {
-			sm: "w-16 h-[1.875rem]",
-			md: "w-20 h-[2.5rem]",
-		},
-	},
-	defaultVariants: {
-		size: "sm",
-	},
-});
-
 interface ButtonProps
 	extends Omit<React.ComponentProps<"button">, "size" | "disabled">,
 		VariantProps<typeof buttonVariants> {
 	icon?: React.ComponentProps<typeof Icon>["svg"];
 	handling?: boolean;
-	loading?: boolean;
 }
 
 export default function Button({
@@ -109,21 +92,9 @@ export default function Button({
 	children,
 	handling,
 	icon,
-	loading,
 	type = "button",
 	...props
 }: ButtonProps) {
-	if (loading) {
-		return (
-			<Skeleton
-				className={cx(
-					buttonVariants({variant: "none", size, className}),
-					buttonSkeletonVariants({size})
-				)}
-			/>
-		);
-	}
-
 	return (
 		<button
 			type={type}
@@ -144,7 +115,7 @@ export default function Button({
 		>
 			<Text
 				variant="label-medium"
-				className={buttonTextVariants({variant, size, className: "truncate"})}
+				className={buttonTextVariants({variant, size})}
 			>
 				{children}
 			</Text>

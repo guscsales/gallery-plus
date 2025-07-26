@@ -20,9 +20,7 @@ export const textVariants = tv({
 	},
 });
 
-interface TextProps
-	extends React.ComponentProps<"span">,
-		VariantProps<typeof textVariants> {
+interface TextProps extends VariantProps<typeof textVariants> {
 	as?: keyof React.JSX.IntrinsicElements;
 	className?: string;
 	children?: React.ReactNode;

@@ -74,7 +74,7 @@ export default function Badge({
 
 	return (
 		<div className={badgeVariants({variant, size, className})} {...props}>
-			<Text className={badgeTextVariants({size, className: "truncate"})}>{children}</Text>
+			<Text className={badgeTextVariants({size})}>{children}</Text>
 		</div>
 	);
 }

@@ -1,16 +1,14 @@
 import {Outlet} from "react-router";
-import Header from "../core-components/header";
-import MainContent from "../core-components/main-content";
-import {Toaster} from "sonner";
+import MainHeader from "../components/main-header";
+import MainContent from "../components/main-content";
 
 export default function LayoutMain() {
-	return (
-		<>
-			<Toaster position="bottom-center" />
-			<Header className="mt-9" />
-			<MainContent>
-				<Outlet />
-			</MainContent>
-		</>
-	);
+  return (
+    <>
+      <MainHeader className="mt-9" />
+      <MainContent>
+        <Outlet />
+      </MainContent>
+    </>
+  );
 }

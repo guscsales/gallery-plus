@@ -52,11 +52,13 @@ const start = async () => {
 	});
 
 	try {
-		await fastify.listen({port: 5799, host: "0.0.0.0"});
-		console.log("🚀 Server running at http://localhost:5799");
-		console.log("📁 Images served at http://localhost:5799/images/");
-		console.log("🏥 Health check at http://localhost:5799/health");
-		console.log(`📂 Data directory: ${resolve(process.cwd(), "data")}`);
+		const port = parseInt(process.env.PORT || "5799");
+
+    await fastify.listen({port, host: "0.0.0.0"});
+    console.log(`🚀 Server running at http://localhost:${port}`);
+    console.log(`📁 Images served at http://localhost:${port}/images/`);
+    console.log(`🏥 Health check at http://localhost:${port}/health`);
+    console.log(`📂 Data directory: ${resolve(process.cwd(), "data")}`);
 	} catch (err) {
 		fastify.log.error(err);
 		process.exit(1);

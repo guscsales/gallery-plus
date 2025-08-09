@@ -44,6 +44,7 @@ export default function AlbumsListSelectable({
   return (
     <ul className="flex flex-col gap-4">
       {!loading &&
+        photo &&
         albums?.length > 0 &&
         albums.map((album, index) => (
           <li key={album.id}>
@@ -52,7 +53,7 @@ export default function AlbumsListSelectable({
                 {album.title}
               </Text>
               <InputCheckbox
-                checked={isChecked(album.id)}
+                defaultChecked={isChecked(album.id)}
                 onChange={() => handlePhotoOnAlbums(album.id)}
                 disabled={isUpdatingPhoto}
               />
